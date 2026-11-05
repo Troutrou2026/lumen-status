@@ -34,3 +34,16 @@ def test_statut_ok_quand_objectif_atteint():
 def test_mtbf():
     assert mtbf(43200, 85, 3) == 14371.7
     assert mtbf(43200, 0, 0) == 43200
+
+
+@pytest.mark.parametrize(
+    "disponibilite,objectif,attendu",
+    [
+        (99.5, 99.5, "OK"),
+        (99.3, 99.8, "DÉGRADÉ"),
+        (99.29, 99.8, "KO"),
+        (99.641, 99.8, "DÉGRADÉ"),
+    ],
+)
+def test_statut_service_cas_limites(disponibilite, objectif, attendu):
+    assert statut_service(disponibilite, objectif) == attendu
